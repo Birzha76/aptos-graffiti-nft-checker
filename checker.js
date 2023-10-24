@@ -32,10 +32,12 @@ const searchNft = async (client, accountAddress) => {
 (async () => {
     let wallets = parseFile('wallets.txt')
     let results = []
+    let nftFound = 0
 
     for (let wallet of wallets) {
         let nftIsset = await searchNft(provider, wallet)
         results.push([wallet, nftIsset])
+        if (nftIsset) nftFound++
     }
 
     fs.writeFile('results.txt', results.join('\n'), function(err) {
@@ -43,6 +45,8 @@ const searchNft = async (client, accountAddress) => {
             console.error(err);
             return;
         }
+        console.log(`[Wallets Count] ${wallets.length}`);
+        console.log(`[NFT Found] ${nftFound}`);
         console.log('[Results Saved] File: results.txt');
     });
 })()
